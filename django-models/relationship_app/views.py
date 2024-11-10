@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
-from .models import Book, Library  # Make sure this line is exactly as written
+from .models import Library  # Make sure this line is exactly as written
 from django.views.generic.detail import DetailView  # Explicit import for DetailView
 
 # Function-based view to list all books
