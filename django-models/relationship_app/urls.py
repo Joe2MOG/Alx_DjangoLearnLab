@@ -66,13 +66,15 @@ from . import views
 
 urlpatterns = [
     # URL pattern for adding a new book
-    path('add_book/', views.add_book, name='add_book'),  # Add this line
+    path('add_book/', views.add_book, name='add_book'),  
 
     # URL pattern for editing an existing book
-    path('edit_book/<int:pk>/', views.edit_book, name='edit_book'),  # Add this line
+    path('edit_book/<int:pk>/', views.edit_book, name='edit_book'),  
+
+    # URL pattern for deleting a book
+    path('delete_book/<int:pk>/', views.delete_book, name='delete_book'),  # Add this line for delete_book
 
     # Existing URL patterns
     path('books/', views.list_books, name='list_books'),  # List all books
     path('library/<int:pk>/', views.LibraryDetailView.as_view(), name='library_detail'),
 ]
-
