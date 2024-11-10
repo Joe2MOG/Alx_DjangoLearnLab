@@ -65,7 +65,14 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('books/add/', views.add_book, name='add_book'),
-    path('books/edit/<int:pk>/', views.edit_book, name='edit_book'),
-    path('books/delete/<int:pk>/', views.delete_book, name='delete_book'),
+    # URL pattern for adding a new book
+    path('add_book/', views.add_book, name='add_book'),  # Add this line
+
+    # URL pattern for editing an existing book
+    path('edit_book/<int:pk>/', views.edit_book, name='edit_book'),  # Add this line
+
+    # Existing URL patterns
+    path('books/', views.list_books, name='list_books'),  # List all books
+    path('library/<int:pk>/', views.LibraryDetailView.as_view(), name='library_detail'),
 ]
+
