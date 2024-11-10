@@ -15,6 +15,7 @@ class LibraryDetailView(DetailView):
     template_name = 'relationship_app/library_detail.html'  # Template for the library details page
     context_object_name = 'library'  # Name of the context variable to access the library in the template
 
+from django.contrib.auth import login  # Import the login function
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
@@ -24,8 +25,9 @@ def register(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('login')
+            user = form.save()  # Save the new user
+            login(request, user)  # Log the user in after successful registration
+            return redirect('home')  # Redirect to a home page or another page after registration
     else:
         form = UserCreationForm()
     return render(request, 'register.html', {'form': form})
