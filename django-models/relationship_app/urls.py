@@ -27,3 +27,11 @@ urlpatterns = [
     path('library/<int:pk>/', LibraryDetailView.as_view(), name='library_detail'),  # URL pattern for the class-based view to display library details
     path('register/', register, name='register'),  # URL pattern for user registration
 ]
+
+from django.urls import path
+from .views import admin_view
+
+urlpatterns = [
+    # Other paths...
+    path('admin-view/', admin_view, name='admin_view'),  # URL pattern for admin view
+]
