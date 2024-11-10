@@ -1,28 +1,34 @@
 from relationship_app.models import Author, Book, Library, Librarian
 
 # Query all books by a specific author
-def books_by_author(author_name):
-    author = Author.objects.get(name=author_name)
-    books = Book.objects.filter(author=author)
-    return books
+def get_books_by_author(author_name):
+    try:
+        author = Author.objects.get(name=author_name)
+        books = Book.objects.filter(author=author)
+        print(f"Books by {author_name}: {[book.title for book in books]}")
+    except Author.DoesNotExist:
+        print("Author not found.")
 
 # List all books in a library
-def books_in_library(library_name):
-    library = Library.objects.get(name=library_name)
-    books = library.books.all()
-    return books
+def list_books_in_library(library_name):
+    try:
+        library = Library.objects.get(name=library_name)
+        books = library.books.all()  # Many-to-Many relationship
+        print(f"Books in {library_name} Library: {[book.title for book in books]}")
+    except Library.DoesNotExist:
+        print("Library not found.")
 
 # Retrieve the librarian for a library
-def librarian_of_library(library_name):
-    library = Library.objects.get(name=library_name)
-    librarian = library.librarian
-    return librarian
+def get_librarian_for_library(library_name):
+    try:
+        library = Library.objects.get(name=library_name)
+        librarian = Librarian.objects.get(library=library)  # One-to-One relationship
+        print(f"Librarian for {library_name} Library: {librarian.name}")
+    except (Library.DoesNotExist, Librarian.DoesNotExist):
+        print("Library or librarian not found.")
 
-# Sample queries to test
+# Test the queries
 if __name__ == "__main__":
-    author_name = "J.K. Rowling"  # Change this to a valid author name
-    library_name = "City Library"  # Change this to a valid library name
-
-    print("Books by author:", books_by_author(author_name))
-    print("Books in library:", books_in_library(library_name))
-    print("Librarian of library:", librarian_of_library(library_name))
+    get_books_by_author("Author Name")          # Replace with an actual author name
+    list_books_in_library("Library Name")       # Replace with an actual library name
+    get_librarian_for_library("Library Name")   # Replace with an actual library name
