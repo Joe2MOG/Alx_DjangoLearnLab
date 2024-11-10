@@ -2,7 +2,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
-from .models import Book, Library
+from .models import Book, Library  # Ensure both Book and Library are imported
 from django.views.generic.detail import DetailView  # Explicit import for DetailView
 
 # Function-based view to list all books
@@ -12,7 +12,7 @@ def list_books(request):
 
 # Class-based view to display details for a specific library
 class LibraryDetailView(DetailView):
-    model = Library
+    model = Library  # Ensure Library is correctly assigned
     template_name = 'relationship_app/library_detail.html'  # Template for the library details page
     context_object_name = 'library'  # Name of the context variable to access the library in the template
 
