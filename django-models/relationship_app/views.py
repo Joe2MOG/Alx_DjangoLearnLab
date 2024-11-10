@@ -1,8 +1,9 @@
 # Import necessary classes and modules
-from django.shortcuts import render
-from .models import Book
+from django.shortcuts import render, redirect
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login
+from .models import Book, Library
 from django.views.generic.detail import DetailView  # Explicit import for DetailView
-from .models import Library
 
 # Function-based view to list all books
 def list_books(request):
@@ -15,10 +16,7 @@ class LibraryDetailView(DetailView):
     template_name = 'relationship_app/library_detail.html'  # Template for the library details page
     context_object_name = 'library'  # Name of the context variable to access the library in the template
 
-from django.shortcuts import render, redirect
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import login
-
+# User registration view
 def register(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
