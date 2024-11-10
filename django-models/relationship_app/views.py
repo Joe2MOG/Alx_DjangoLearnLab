@@ -1,6 +1,7 @@
+# Import necessary classes and modules
 from django.shortcuts import render
 from .models import Book
-from django.views.generic import DetailView
+from django.views.generic.detail import DetailView  # Explicit import for DetailView
 from .models import Library
 
 # Function-based view to list all books
