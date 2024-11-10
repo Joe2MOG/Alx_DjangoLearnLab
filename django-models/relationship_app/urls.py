@@ -18,3 +18,12 @@ urlpatterns = [
     # URL pattern for the registration view, explicitly using views.register
     path('register/', views.register, name='register'),  # This line contains "views.register"
 ]
+
+from django.urls import path
+from .views import list_books, LibraryDetailView, register  # Import the views
+
+urlpatterns = [
+    path('books/', list_books, name='list_books'),  # URL pattern for the function-based view to list books
+    path('library/<int:pk>/', LibraryDetailView.as_view(), name='library_detail'),  # URL pattern for the class-based view to display library details
+    path('register/', register, name='register'),  # URL pattern for user registration
+]
