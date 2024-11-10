@@ -35,3 +35,11 @@ urlpatterns = [
     # Other paths...
     path('admin-view/', admin_view, name='admin_view'),  # URL pattern for admin view
 ]
+
+from django.urls import path
+from .views import librarian_view
+
+urlpatterns = [
+    # Other paths...
+    path('librarian-view/', librarian_view, name='librarian_view'),  # URL pattern for librarian view
+]
