@@ -43,3 +43,11 @@ urlpatterns = [
     # Other paths...
     path('librarian-view/', librarian_view, name='librarian_view'),  # URL pattern for librarian view
 ]
+
+from django.urls import path
+from .views import member_view
+
+urlpatterns = [
+    # Other paths...
+    path('member-view/', member_view, name='member_view'),  # URL pattern for member view
+]
