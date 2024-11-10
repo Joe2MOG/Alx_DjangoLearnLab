@@ -16,5 +16,5 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(template_name='logout.html'), name='logout'),
 
     # URL pattern for the registration view
-    path('register/', register, name='register'),
+    path('register/', register, name='register'),  # Ensure this line is correct and placed here
 ]
