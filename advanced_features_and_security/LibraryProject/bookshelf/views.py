@@ -39,3 +39,12 @@ def delete_book(request, book_id):
         book.delete()
         return redirect('view_books')
     return render(request, 'bookshelf/delete_book.html', {'book': book})
+
+@permission_required('bookshelf.can_view', raise_exception=True)
+def book_list(request):
+    """
+    Display a list of all books.
+    Requires 'can_view' permission.
+    """
+    books = Book.objects.all()
+    return render(request, 'bookshelf/book_list.html', {'books': books})
