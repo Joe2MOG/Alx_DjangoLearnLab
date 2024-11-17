@@ -4,6 +4,7 @@
 from django.contrib.auth.decorators import permission_required
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Book
+from .forms import ExampleForm
 
 @permission_required('bookshelf.can_view', raise_exception=True)
 def view_books(request):
@@ -52,7 +53,7 @@ from django import forms
 
 class SearchForm(forms.Form):
     author = forms.CharField(max_length=100, required=False)
-    
+
 def book_search(request):
     form = SearchForm(request.GET)
     if form.is_valid():
