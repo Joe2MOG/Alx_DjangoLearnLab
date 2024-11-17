@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'bookshelf', 
     'relationship_app.apps.RelationshipAppConfig',
 ]
+INSTALLED_APPS += ['django_csp']
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -50,6 +51,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+MIDDLEWARE += ['csp.middleware.CSPMiddleware']
+
 
 ROOT_URLCONF = 'LibraryProject.urls'
 
@@ -125,3 +128,29 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'bookshelf.CustomUser'
+
+# settings.py
+
+import os
+
+# Security Settings
+DEBUG = False  # Make sure this is False in production
+ALLOWED_HOSTS = ['yourdomain.com', 'localhost']  # Update this with your domain
+
+# Browser Security
+SECURE_BROWSER_XSS_FILTER = True  # Enable browser's XSS filtering
+X_FRAME_OPTIONS = 'DENY'  # Prevent your site from being embedded in an iframe
+SECURE_CONTENT_TYPE_NOSNIFF = True  # Prevent browser from guessing MIME types
+
+# HTTPS Settings
+CSRF_COOKIE_SECURE = True  # Send CSRF cookies over HTTPS only
+SESSION_COOKIE_SECURE = True  # Send session cookies over HTTPS only
+SECURE_HSTS_SECONDS = 31536000  # Force HTTPS for one year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True  # Apply HSTS to all subdomains
+SECURE_HSTS_PRELOAD = True  # Preload HSTS
+
+# Additional CSP (if using django-csp middleware)
+CSP_DEFAULT_SRC = ("'self'",)  # Allow content only from your site
+CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'", "trusted-cdn.com")  # Update as needed
+
+

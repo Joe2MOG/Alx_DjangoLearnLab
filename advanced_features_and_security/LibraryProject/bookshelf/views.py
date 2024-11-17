@@ -1,4 +1,3 @@
-from django.shortcuts import render
 
 # Create your views here.
 
@@ -46,5 +45,19 @@ def book_list(request):
     Display a list of all books.
     Requires 'can_view' permission.
     """
-    books = Book.objects.all()
+    books = Book.objects.filter(author__icontains=request.GET.get('author', ''))
     return render(request, 'bookshelf/book_list.html', {'books': books})
+
+from django import forms
+
+class SearchForm(forms.Form):
+    author = forms.CharField(max_length=100, required=False)
+    
+def book_search(request):
+    form = SearchForm(request.GET)
+    if form.is_valid():
+        author = form.cleaned_data.get('author')
+        books = Book.objects.filter(author__icontains=author)
+    else:
+        books = Book.objects.none()
+    return render(request, 'bookshelf/book_list.html', {'books': books, 'form': form})
