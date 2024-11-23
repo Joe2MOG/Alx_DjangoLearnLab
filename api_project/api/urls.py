@@ -11,3 +11,10 @@ urlpatterns = [
     path('books/', BookList.as_view(), name='book-list'),  # Keep the old endpoint for listing books
     path('', include(router.urls)),  # Includes all routes for BookViewSet (CRUD operations)
 ]
+
+from rest_framework.authtoken import views
+
+urlpatterns = [
+    # other paths...
+    path('api-token-auth/', views.obtain_auth_token, name='api_token_auth'),
+]
