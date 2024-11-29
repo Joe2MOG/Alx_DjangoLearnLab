@@ -26,7 +26,7 @@ class BookListView(generics.ListAPIView):
     # Add filter, search, and ordering backends
     filter_backends = [
         filters.DjangoFilterBackend,  # Required for filtering
-        filters.SearchFilter,  # For search functionality
+        SearchFilter,  # For search functionality
         filters.OrderingFilter  # For ordering results
     ]
 
