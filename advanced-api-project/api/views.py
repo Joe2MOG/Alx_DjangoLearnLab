@@ -22,11 +22,12 @@ class BookListView(generics.ListAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]  # Apply permission
+
     # Add filter, search, and ordering backends
     filter_backends = [
         filters.DjangoFilterBackend,  # Required for filtering
-        SearchFilter,  # For search functionality
-        OrderingFilter  # For ordering results
+        filters.SearchFilter,  # For search functionality
+        filters.OrderingFilter  # For ordering results
     ]
 
     # Fields allowed for filtering
