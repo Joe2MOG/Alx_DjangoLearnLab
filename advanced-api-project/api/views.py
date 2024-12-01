@@ -27,7 +27,7 @@ class BookListView(generics.ListAPIView):
     # Add filter, search, and ordering backends
     filter_backends = [
         filters.DjangoFilterBackend,  # Required for filtering
-        filters.SearchFilter,  # For search functionality
+        SearchFilter,  # For search functionality
         filters.OrderingFilter  # For ordering results
     ]
 
@@ -39,6 +39,10 @@ class BookListView(generics.ListAPIView):
 
     # Fields allowed for ordering
     ordering_fields = ['title', 'publication_year']
+
+def redundant_import():
+    from rest_framework import filters
+    filter_backends = [filters.SearchFilter]    
 
 # DetailView: Retrieve a single book by ID
 class BookDetailView(generics.RetrieveAPIView):
