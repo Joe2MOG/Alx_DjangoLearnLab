@@ -14,3 +14,15 @@
 
 ## Notes
 - Profile management currently allows viewing basic user information. Additional features can be implemented as needed.
+
+Blog Post Management:
+
+- Post List: Displays all blog posts at `/`.
+- Post Detail: Displays a single blog post with details at `/post/<id>/`.
+- Post Creation: Authenticated users can create a new post at `/post/new/`.
+- Post Editing: Authenticated users can edit their posts at `/post/<id>/edit/`.
+- Post Deletion: Authenticated users can delete their posts at `/post/<id>/delete/`.
+
+Permissions:
+- Only authenticated users can create posts.
+- Only the author of a post can edit or delete their post.
