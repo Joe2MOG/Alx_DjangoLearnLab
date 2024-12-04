@@ -9,3 +9,21 @@
   <a href="{% url 'blog:post_delete' post.pk %}">Delete</a>
   <a href="{% url 'blog:post_list' %}">Back to List</a>
 {% endblock %}
+
+{% for comment in comments %}
+    <div>
+        <p>{{ comment.content }}</p>
+        <small>By {{ comment.author }} on {{ comment.created_at }}</small>
+        <p>
+            <a href="{% url 'comment_edit' comment.pk %}">Edit</a> |
+            <a href="{% url 'comment_delete' comment.pk %}">Delete</a>
+        </p>
+    </div>
+{% endfor %}
+
+<h2>Add a Comment</h2>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Add Comment</button>
+</form>
