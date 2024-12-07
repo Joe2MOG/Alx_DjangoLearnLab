@@ -10,6 +10,7 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from .forms import CustomUserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+#from django.db.models import Q
 
 # Create your views here.
 
@@ -27,6 +28,7 @@ def register(request):
 @login_required
 def profile(request):
     return render(request, 'blog/profile.html')
+
 
 
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -171,3 +173,18 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
     def get_post(self):
         # Fetch the post associated with the comment
         return get_object_or_404(Post, pk=self.kwargs['post_id'])
+
+from django.db.models import Q
+
+def search(request):
+    query = request.GET.get('q', '')
+    posts = Post.objects.filter(
+        Q(title__icontains=query) | Q(content__icontains=query) | Q(tags__name__icontains=query)
+    ).distinct()
+    return render(request, 'blog/search_results.html', {'posts': posts, 'query': query})
+
+
+def tagged_posts(request, tag_name):
+    tag = Tag.objects.get(name=tag_name)
+    posts = tag.posts.all()
+    return render(request, 'blog/tagged_posts.html', {'posts': posts, 'tag': tag})
