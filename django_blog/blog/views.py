@@ -183,8 +183,3 @@ def search(request):
     ).distinct()
     return render(request, 'blog/search_results.html', {'posts': posts, 'query': query})
 
-
-def tagged_posts(request, tag_name):
-    tag = Tag.objects.get(name=tag_name)
-    posts = tag.posts.all()
-    return render(request, 'blog/tagged_posts.html', {'posts': posts, 'tag': tag})
