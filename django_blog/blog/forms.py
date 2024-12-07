@@ -16,6 +16,9 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ['title', 'content', 'tags']
+        widgets = {
+            'tags': TagWidget(),  # Use TagWidget for the tags field
+        }
 
     tags = forms.ModelMultipleChoiceField(
         queryset=Tag.objects.all(),
@@ -34,3 +37,6 @@ class CommentForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['content'].widget.attrs.update({'class': 'form-control'})
+
+from taggit.forms import TagWidget
+
