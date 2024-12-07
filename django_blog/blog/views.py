@@ -175,6 +175,8 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
         return get_object_or_404(Post, pk=self.kwargs['post_id'])
 
 from django.db.models import Q
+from django.views.generic.list import ListView
+from taggit.models import Tag
 
 def search(request):
     query = request.GET.get('q', '')
@@ -183,3 +185,18 @@ def search(request):
     ).distinct()
     return render(request, 'blog/search_results.html', {'posts': posts, 'query': query})
 
+
+class PostByTagListView(ListView):
+    model = Post
+    template_name = 'blog/posts_by_tag.html'
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        tag_slug = self.kwargs.get('tag_slug')
+        self.tag = Tag.objects.get(slug=tag_slug)
+        return Post.objects.filter(tags=self.tag)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['tag'] = self.tag
+        return context
