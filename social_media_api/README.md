@@ -157,3 +157,47 @@ If you'd like to contribute to this project, please fork the repository and subm
 
 ## License
 This project is licensed under the MIT License. See the LICENSE file for details.
+
+User Follow and Feed Functionality
+Follow and Unfollow Endpoints
+Method	Endpoint	Description
+POST	/accounts/follow/<id>/	Follow a user
+POST	/accounts/unfollow/<id>/	Unfollow a user
+Example Request: Follow a User
+bash
+Copy code
+POST /accounts/follow/2/
+Authorization: Token <your_token>
+Example Response
+json
+Copy code
+{
+  "message": "You are now following user123"
+}
+Feed Endpoint
+Method	Endpoint	Description
+GET	/posts/feed/	Get posts from followed users
+Example Request: Retrieve Feed
+bash
+Copy code
+GET /posts/feed/
+Authorization: Token <your_token>
+Example Response
+json
+Copy code
+[
+  {
+    "id": 1,
+    "author": "user123",
+    "title": "My First Post",
+    "content": "This is the content of my first post.",
+    "created_at": "2024-12-14T10:00:00Z"
+  },
+  {
+    "id": 2,
+    "author": "user456",
+    "title": "Another Post",
+    "content": "This is another post content.",
+    "created_at": "2024-12-14T09:30:00Z"
+  }
+]
