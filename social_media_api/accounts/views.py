@@ -7,7 +7,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST
 from .models import CustomUser
-from .serializers import UserSerializer
+#from .serializers import UserSerializer
 from .serializers import UserRegistrationSerializer
 
 class RegisterView(APIView):
