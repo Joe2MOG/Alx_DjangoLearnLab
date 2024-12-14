@@ -31,7 +31,13 @@ class LoginView(APIView):
 
 from rest_framework import generics
 from django.shortcuts import get_object_or_404
-#from .models import CustomUser
+
+
+# List all users that can be followed
+class UserListView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset = CustomUser.objects.all()
+    # You can add a serializer for the User model, like `CustomUserSerializer` to specify how user data is serialized.
 
 # Follow User view
 class FollowUserView(generics.GenericAPIView):
