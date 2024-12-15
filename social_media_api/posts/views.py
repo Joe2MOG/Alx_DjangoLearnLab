@@ -38,8 +38,6 @@ class PostViewSet(viewsets.ModelViewSet):
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
-#from .models import Post
-#from .serializers import PostSerializer
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -48,3 +46,30 @@ def feed(request):
     posts = Post.objects.filter(author__in=following_users).order_by('-created_at')
     serializer = PostSerializer(posts, many=True)
     return Response(serializer.data)
+
+from rest_framework import generics, permissions
+from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
+from .models import Post, Like
+from .serializers import LikeSerializer
+
+class LikePostView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, pk):
+        post = get_object_or_404(Post, pk=pk)
+        like, created = Like.objects.get_or_create(user=request.user, post=post)
+        if not created:
+            return Response({"message": "You already liked this post."}, status=400)
+        return Response({"message": "Post liked successfully."})
+
+class UnlikePostView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, pk):
+        post = get_object_or_404(Post, pk=pk)
+        like = Like.objects.filter(user=request.user, post=post).first()
+        if not like:
+            return Response({"message": "You haven't liked this post."}, status=400)
+        like.delete()
+        return Response({"message": "Post unliked successfully."})

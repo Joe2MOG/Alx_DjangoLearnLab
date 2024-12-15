@@ -201,3 +201,170 @@ Copy code
     "created_at": "2024-12-14T09:30:00Z"
   }
 ]
+
+# Documentation for Likes and Notifications Functionality
+
+This document provides an overview of the implementation, usage, and benefits of the likes and notifications features for the **Social Media API**. These features enhance user engagement by enabling users to like posts and receive notifications for various activities.
+
+---
+
+## Features Overview
+
+1. **Likes Functionality:**
+   - Users can like or unlike posts.
+   - Prevents multiple likes by the same user on the same post.
+
+2. **Notifications Functionality:**
+   - Notifications are generated for events like new followers, post likes, and comments.
+   - Users can view their unread and read notifications.
+
+---
+
+## Endpoints and Usage
+
+### **Likes Functionality**
+
+#### Like a Post
+- **Endpoint:** `/posts/<post_id>/like/`
+- **Method:** `POST`
+- **Authentication Required:** Yes
+
+##### Request Example:
+```bash
+POST /posts/1/like/ HTTP/1.1
+Authorization: Bearer <your_token>
+```
+
+##### Response Example (Success):
+```json
+{
+    "message": "Post liked successfully."
+}
+```
+
+##### Response Example (Already Liked):
+```json
+{
+    "message": "You already liked this post."
+}
+```
+
+#### Unlike a Post
+- **Endpoint:** `/posts/<post_id>/unlike/`
+- **Method:** `POST`
+- **Authentication Required:** Yes
+
+##### Request Example:
+```bash
+POST /posts/1/unlike/ HTTP/1.1
+Authorization: Bearer <your_token>
+```
+
+##### Response Example (Success):
+```json
+{
+    "message": "Post unliked successfully."
+}
+```
+
+##### Response Example (Not Liked):
+```json
+{
+    "message": "You haven't liked this post."
+}
+```
+
+---
+
+### **Notifications Functionality**
+
+#### Fetch Notifications
+- **Endpoint:** `/notifications/`
+- **Method:** `GET`
+- **Authentication Required:** Yes
+
+##### Request Example:
+```bash
+GET /notifications/ HTTP/1.1
+Authorization: Bearer <your_token>
+```
+
+##### Response Example:
+```json
+[
+    {
+        "id": 1,
+        "recipient": "user1",
+        "actor": "user2",
+        "verb": "liked your post",
+        "target": "Post 1",
+        "created_at": "2024-12-15T12:00:00Z",
+        "read": false
+    },
+    {
+        "id": 2,
+        "recipient": "user1",
+        "actor": "user3",
+        "verb": "started following you",
+        "target": null,
+        "created_at": "2024-12-15T12:10:00Z",
+        "read": true
+    }
+]
+```
+
+---
+
+## Models Overview
+
+### Like Model
+Tracks the users who have liked specific posts.
+
+```python
+class Like(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='likes')
+    post = models.ForeignKey('Post', on_delete=models.CASCADE, related_name='likes')
+    created_at = models.DateTimeField(auto_now_add=True)
+```
+
+### Notification Model
+Records notifications for user activities.
+
+```python
+class Notification(models.Model):
+    recipient = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notifications')
+    actor = models.ForeignKey(User, on_delete=models.CASCADE, related_name='actor_notifications')
+    verb = models.CharField(max_length=255)
+    target_content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, null=True, blank=True)
+    target_object_id = models.PositiveIntegerField(null=True, blank=True)
+    target = GenericForeignKey('target_content_type', 'target_object_id')
+    created_at = models.DateTimeField(auto_now_add=True)
+    read = models.BooleanField(default=False)
+```
+
+---
+
+## Benefits
+
+- **User Engagement:** Notifications keep users informed about interactions, encouraging more activity.
+- **Transparency:** Users can see who liked their posts or followed them.
+- **Scalability:** The system can easily handle additional notification types in the future.
+
+---
+
+## Testing
+
+### Likes Testing
+1. Use Postman to test liking/unliking posts.
+2. Verify that a user cannot like the same post multiple times.
+
+### Notifications Testing
+1. Ensure notifications are created for the following scenarios:
+   - A user likes a post.
+   - A user starts following another user.
+2. Check the `/notifications/` endpoint to confirm correct retrieval.
+
+---
+
+For further questions or troubleshooting, refer to the code repository at [Alx_DjangoLearnLab](https://github.com/your-repo-link).
+
