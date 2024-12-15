@@ -62,15 +62,15 @@ class LikePostView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]  # Ensure only authenticated users can like posts
 
     def post(self, request, pk):
-        post = get_object_or_404(Post, pk=pk)  # Explicitly using get_object_or_404
+        # Fetch the post using generics.get_object_or_404
+        post = generics.get_object_or_404(Post, pk=pk)  
         user = request.user
 
-        # Check if the user has already liked the post
-        if Like.objects.filter(user=user, post=post).exists():
-            return Response({"error": "You have already liked this post."}, status=status.HTTP_400_BAD_REQUEST)
+        # Use Like.objects.get_or_create to ensure a single like per user
+        like, created = Like.objects.get_or_create(user=user, post=post)  
 
-        # Create a Like entry
-        Like.objects.create(user=user, post=post)
+        if not created:
+            return Response({"error": "You have already liked this post."}, status=status.HTTP_400_BAD_REQUEST)
 
         # Generate a notification for the post owner
         Notification.objects.create(
@@ -87,7 +87,8 @@ class UnlikePostView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]  # Ensure only authenticated users can unlike posts
 
     def post(self, request, pk):
-        post = get_object_or_404(Post, pk=pk)  # Explicitly using get_object_or_404
+        # Fetch the post using generics.get_object_or_404
+        post = generics.get_object_or_404(Post, pk=pk)  
         user = request.user
 
         # Check if the user has liked the post
